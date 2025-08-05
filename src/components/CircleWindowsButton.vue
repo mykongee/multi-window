@@ -13,14 +13,6 @@ const centerY = 1000;
 const radius = 200;   // Distance from center
 const numWindows = 8;
 
-// For each window i (0, 1, 2, 3...):
-// const angleInDegrees = (360 * i) / numWindows;
-// const angleInRadians = (2 * Math.PI * i) / numWindows;  // JavaScript uses radians
-
-// Convert polar coordinates (angle, radius) to cartesian (x, y):
-// const x = centerX + radius * Math.cos(angleInRadians);
-// const y = centerY + radius * Math.sin(angleInRadians);
-
 function generatePastelColors(numColors) {
     const colors = [];
     for (let i = 0; i < numColors; i++) {
@@ -38,8 +30,8 @@ function openCircularWindows(numWindows) {
     // Use smaller, more predictable values
     // const centerX = 400;  // Fixed center instead of screen.width/2
     // const centerY = 300;  // Fixed center instead of screen.height/2
-    const radius = 150;   // Smaller radius
-    const windowSize = 100; // Smaller windows
+    const radius = 300;   // Smaller radius
+    const windowSize = 150; // Smaller windows
     
     // Calculate safe bounds so the entire circle stays visible
     const margin = radius + (windowSize / 2);
@@ -62,7 +54,7 @@ function openCircularWindows(numWindows) {
         const windowX = x - (windowSize / 2);
         const windowY = y - (windowSize / 2);
         
-        const features = `width=${windowSize},height=${windowSize},left=${windowX},top=${windowY},menubar=no,toolbar=no,location=no,status=no,scrollbars=no`;
+        const features = `width=${windowSize+20*i+1},height=${windowSize+20*i+1},left=${windowX},top=${windowY},menubar=no,toolbar=no,location=no,status=no,scrollbars=no`;
         const newWindow = window.open('', `circle_window_${Date.now()}_${i}`, features);
     
         newWindow.document.title = `${i + 1}`;

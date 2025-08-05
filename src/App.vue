@@ -1,5 +1,4 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 import NewWindow from './components/NewWindowButton.vue';
 import CircleWindowsButton from './components/CircleWindowsButton.vue';
 import SineWaveAnimationButton from './components/SineWaveAnimationButton.vue';
@@ -11,7 +10,6 @@ import SineWaveAnimationButton from './components/SineWaveAnimationButton.vue';
     <NewWindow />
     <SineWaveAnimationButton />
   </div>
-  <!-- <HelloWorld msg="Vite + Vue" /> -->
 </template>
 
 <style scoped>
