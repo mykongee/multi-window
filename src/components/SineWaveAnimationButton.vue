@@ -1,43 +1,53 @@
 <script setup>
-import { ref } from 'vue';
+import { generateRainbowColors } from '../utils/colorUtils.js';
+import { createWindow, calculateGridPositions } from '../utils/windowUtils.js';
+import { createAnimation, animationManager, animateSineWave, animateTravelingWave } from '../utils/animationUtils.js';
+import { WINDOW_CONFIG, ANIMATION } from '../utils/constants.js';
 
-const animatedWindows = []; // Store window references
-let animationId = null;   // For stopping animation
+let currentAnimationStop = null;
 
 function createAnimatedWindows(numWindows) {
-    const windowSize = 80;
-    const startY = 300; // Baseline Y position
-    
-    // Create windows in a horizontal line first
-    for (let i = 0; i < numWindows; i++) {
-        const x = 100 + i * 100; // Spread them horizontally
-        const y = startY;
-        
-        const features = `width=${windowSize},height=${windowSize},left=${x},top=${y},menubar=no,toolbar=no,location=no,status=no,scrollbars=no`;
-        const newWindow = window.open('', `wave_window_${Date.now()}_${i}`, features);
-        
-        newWindow.document.title = `${i + 1}`;
-        newWindow.document.body.style.backgroundColor = `hsl(${(360 * i) / numWindows}, 60%, 80%)`;
-        
-        setTimeout(() => {
-            if (!newWindow.closed) {
-                newWindow.close();
-            }
-        }, 10000);
-
-        // Store window reference with its index
-        animatedWindows.push({
-            window: newWindow,
-            index: i,
-            baseX: x,
-            baseY: startY
-        });
+    // Stop any existing animation
+    if (currentAnimationStop) {
+        currentAnimationStop();
     }
     
-    // Start the animation
-    // startSineWaveAnimation();
-    // startTravelingWave();
-    startTrueTravelingWave();
+    const windowSize = 80;
+    const startY = 300;
+    const spacing = 100;
+    
+    // Generate positions and colors
+    const positions = calculateGridPositions(numWindows, spacing, { x: 100, y: startY });
+    const colors = generateRainbowColors(numWindows, 60, 80);
+    
+    // Create windows with metadata
+    const windows = positions.map((position, i) => {
+        const windowConfig = {
+            width: windowSize,
+            height: windowSize,
+            x: position.x,
+            y: position.y,
+            title: `${i + 1}`,
+            backgroundColor: colors[i],
+            autoCloseDelay: ANIMATION.ANIMATION_CLOSE_DELAY
+        };
+        
+        const newWindow = createWindow(windowConfig);
+        
+        return {
+            window: newWindow,
+            index: i,
+            baseX: position.x,
+            baseY: position.y
+        };
+    });
+    
+    // Start the traveling wave animation
+    currentAnimationStop = createAnimation('traveling-wave', windows, animateTravelingWave, {
+        amplitude: 80,
+        waveLength: 3,
+        speed: 0.15
+    });
 }
 
 function startSineWaveAnimation() {
@@ -123,19 +133,23 @@ function startTravelingWave() {
 }
 
 function stopAnimation() {
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
+    // if (animationId) {
+    //     cancelAnimationFrame(animationId);
+    //     animationId = null;
+    // }
+    if (currentAnimationStop) {
+        currentAnimationStop();
+        currentAnimationStop = null;
     }
+
+    // // Close all windows
+    // animatedWindows.forEach(winObj => {
+    //     if (!winObj.window.closed) {
+    //         winObj.window.close();
+    //     }
+    // });
     
-    // Close all windows
-    animatedWindows.forEach(winObj => {
-        if (!winObj.window.closed) {
-            winObj.window.close();
-        }
-    });
-    
-    animatedWindows = [];
+    // animatedWindows = [];
 }
 
 </script>

@@ -1,41 +1,31 @@
 <script setup>
-import { ref } from 'vue';
-
-function generateRandomDimensions() {
-    const dimensions = {
-        w: undefined,
-        h: undefined,
-        x: undefined,
-        y: undefined
-    };
-    dimensions.w = Math.round(Math.random() * 400);
-    dimensions.h = Math.round(Math.random() * 400);
-    dimensions.x = Math.round(Math.random() * 1000);
-    dimensions.y = Math.round(Math.random() * 1000);
-    return dimensions;
-}
+import { getRandomDimensions, getRandomPosition, createWindow } from '../utils/windowUtils.js';
+import { WINDOW_CONFIG } from '../utils/constants.js';
 
 function openNewWindow() {
-    const dimensions = generateRandomDimensions();
-    console.log(dimensions);
+    const dimensions = getRandomDimensions();
+    const position = getRandomPosition(Math.max(dimensions.width, dimensions.height));
+    
+    console.log({ dimensions, position });
 
-    const uniqueName = `window_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const windowConfig = {
+        width: dimensions.width,
+        height: dimensions.height,
+        x: position.x,
+        y: position.y,
+        title: 'Random Window',
+        backgroundColor: '#ffffff',
+        autoCloseDelay: WINDOW_CONFIG.AUTO_CLOSE_DELAY
+    };
+    
+    const newWindow = createWindow(windowConfig);
 
-    const newWindow = window.open(
-        `about:${uniqueName}`,
-        uniqueName,
-        `width=${dimensions.w},height=${dimensions.h},left=${dimensions.x},top=${dimensions.y},popup=yes,menubar='',toolbar='',resizable=''`
-    );
-
+    // Focus the window after a short delay
     setTimeout(() => {
-        newWindow.focus();
-    }, 1000);
-
-    setTimeout(() => {
-        if (!newWindow.closed) {
-            newWindow.close();
+        if (newWindow && !newWindow.closed) {
+            newWindow.focus();
         }
-    }, 5000);
+    }, 1000);
 }
 
 </script>
