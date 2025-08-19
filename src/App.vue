@@ -2,6 +2,9 @@
 import NewWindow from './components/NewWindowButton.vue';
 import CircleWindowsButton from './components/CircleWindowsButton.vue';
 import SineWaveAnimationButton from './components/SineWaveAnimationButton.vue';
+import FireworkBurstButton from './components/FireworkBurstButton.vue';
+import CrossExpansionButton from './components/CrossExpansionButton.vue';
+import AnimatedCrossButton from './components/AnimatedCrossButton.vue';
 </script>
 
 <template>
@@ -9,6 +12,9 @@ import SineWaveAnimationButton from './components/SineWaveAnimationButton.vue';
     <CircleWindowsButton />  
     <NewWindow />
     <SineWaveAnimationButton />
+    <FireworkBurstButton />
+    <CrossExpansionButton />
+    <AnimatedCrossButton />
   </div>
 </template>
 
