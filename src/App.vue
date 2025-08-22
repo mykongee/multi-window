@@ -5,6 +5,7 @@ import SineWaveAnimationButton from './components/SineWaveAnimationButton.vue';
 import FireworkBurstButton from './components/FireworkBurstButton.vue';
 import CrossExpansionButton from './components/CrossExpansionButton.vue';
 import AnimatedCrossButton from './components/AnimatedCrossButton.vue';
+import BoidsFlockingButton from './components/BoidsFlockingButton.vue';
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import AnimatedCrossButton from './components/AnimatedCrossButton.vue';
     <FireworkBurstButton />
     <CrossExpansionButton />
     <AnimatedCrossButton />
+    <BoidsFlockingButton />
   </div>
 </template>
 
